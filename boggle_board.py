@@ -25,9 +25,12 @@ class BoggleBoard:
     for row in range(4):
       for cell in range(4):
         if self.board[row][cell] == "":
-          print("_",end="")
+          print("__",end="")
         else:
-          print(self.board[row][cell], end="")
+          if len(self.board[row][cell]) == 2:
+            print(f'{self.board[row][cell]} ', end="")
+          else:
+            print(f'{self.board[row][cell]}  ', end="")
       print()
 
 

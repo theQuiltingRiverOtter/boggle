@@ -41,6 +41,7 @@ class BoggleBoard:
             for cell in range(4):
                 self.board[row][cell] = Dice.allDice[counter].random_letter()
                 counter += 1
+        self.print_board()
 
     def print_board(self):
         for row in range(4):
@@ -92,15 +93,19 @@ class BoggleBoard:
 
 if __name__ == "__main__":
     boggle = BoggleBoard()
-    boggle.shake()
-    boggle.print_board()
-    print()
-
     with open("words.txt") as file:
         data = file.read()
         data = data.split("\n")
 
-    for word in data:
-        if boggle.include_word(word):
-            print(word)
-    print("All done")
+    word_not_found = True
+    iterations = 0
+    while word_not_found:
+        iterations += 1
+        boggle.shake()
+        for word in data:
+            if boggle.include_word(word):
+                print(word)
+                word_not_found = False
+        if word_not_found:
+            print("No words here")
+    print(f"It took {iterations} iterations to find a word")

@@ -30,6 +30,7 @@ class BoggleBoard:
                 "DEILRX",
             ]
         )
+        self._score = 0
 
     def __str__(self):
         return f"{self.board}"
@@ -90,22 +91,40 @@ class BoggleBoard:
                 return True
         return False
 
+    @staticmethod
+    def check_all_words():
+        with open("words.txt") as file:
+            data = file.read()
+            data = data.split("\n")
+        word_not_found = True
+        iterations = 0
+        while word_not_found:
+            iterations += 1
+            boggle.shake()
+            for word in data:
+                if boggle.include_word(word):
+                    print(word)
+                    word_not_found = False
+            if word_not_found:
+                print("No words here")
+        print(f"It took {iterations} iterations to find a word")
+
+    def play(self):
+        self.shake()
+        while True:
+            answer = input("Type in word or 'q' to quit: ")
+            if answer == "q":
+                break
+            if self.include_word(answer):
+                self._score += 1
+                print(f"{answer} is on the board")
+            else:
+                print("That's not there")
+        print(f"You scored: {self._score}")
+
 
 if __name__ == "__main__":
     boggle = BoggleBoard()
-    with open("words.txt") as file:
-        data = file.read()
-        data = data.split("\n")
-
-    word_not_found = True
-    iterations = 0
-    while word_not_found:
-        iterations += 1
-        boggle.shake()
-        for word in data:
-            if boggle.include_word(word):
-                print(word)
-                word_not_found = False
-        if word_not_found:
-            print("No words here")
-    print(f"It took {iterations} iterations to find a word")
+    boggle.play()
+    print()
+    BoggleBoard.check_all_words()
